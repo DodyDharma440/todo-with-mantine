@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { NextPage } from "next";
-import { Button, useMantineTheme } from "@mantine/core";
+import { Container } from "@common-components";
+import { Header, TodoForm, TodoLists } from "@todos/components";
+import { ITodo } from "@todos/interfaces";
 
 const Home: NextPage = () => {
-  const theme = useMantineTheme();
+  const [todos, setTodos] = useState<ITodo[]>([]);
 
-  console.log("theme => ", theme);
+  console.log("todos => ", todos);
+
+  const handleSubmitTodo = (todo: ITodo) => {
+    setTodos((_todos) => [..._todos, todo]);
+  };
+
+  const handleComplete = (isComplete: boolean, index: number) => {
+    const todo: ITodo = { ...todos[index], isCompleted: !isComplete };
+    todos[index] = todo;
+    setTodos([...todos]);
+  };
+
+  const handleDelete = (index: number) => {
+    todos.splice(index, 1);
+    setTodos([...todos]);
+  };
 
   return (
-    <div>
-      <Button>Mantine Button</Button>
-    </div>
+    <Container>
+      <Header />
+      <TodoForm onSubmitTodo={handleSubmitTodo} />
+      <TodoLists
+        todos={todos}
+        onComplete={handleComplete}
+        onDelete={handleDelete}
+      />
+    </Container>
   );
 };
 

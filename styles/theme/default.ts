@@ -5,6 +5,7 @@ const defaultTheme: MantineThemeOverride = {
   headings: {
     fontFamily: "'Inter', sans-serif",
   },
+  primaryColor: "grape",
 };
 
 export default defaultTheme;
