@@ -1,8 +1,26 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from "next/app";
+import Head from "next/head";
+import { MantineProvider } from "@mantine/core";
+import defaultTheme from "@styles/theme/default";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  return (
+    <>
+      <Head>
+        <title>Todo App</title>
+      </Head>
 
-export default MyApp
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          ...defaultTheme,
+        }}
+      >
+        <Component {...pageProps} />
+      </MantineProvider>
+    </>
+  );
+};
+
+export default App;
