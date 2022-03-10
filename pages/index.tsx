@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
+import { useLocalStorageValue } from "@mantine/hooks";
 import { Container } from "@common-components";
 import { Header, TodoForm, TodoLists } from "@todos/components";
 import { ITodo } from "@todos/interfaces";
 
 const Home: NextPage = () => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
-
-  console.log("todos => ", todos);
+  const [persistedTodos, setPersistedTodos] = useLocalStorageValue({
+    key: "todos",
+    defaultValue: JSON.stringify([]),
+  });
+  const [todos, setTodos] = useState<ITodo[]>(JSON.parse(persistedTodos));
 
   const handleSubmitTodo = (todo: ITodo) => {
     setTodos((_todos) => [..._todos, todo]);
@@ -23,6 +26,10 @@ const Home: NextPage = () => {
     todos.splice(index, 1);
     setTodos([...todos]);
   };
+
+  useEffect(() => {
+    setPersistedTodos(JSON.stringify(todos));
+  }, [todos, setPersistedTodos]);
 
   return (
     <Container>
